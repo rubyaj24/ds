@@ -17,6 +17,8 @@ int main(int argc, char const *argv[])
 	printf("Enter the elements: ");
 	insert(arr1,n);
 	for(int i = 0; i<n; i++){
+		int arr[0][i]=-1;
+		int arr[1][i]=0;
 		int count = 0;
 		for (int j = i+1; j < n; j++)
 		{
