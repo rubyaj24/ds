@@ -74,32 +74,54 @@ int isOperator(char c){
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-void infixToPostfix(char* infix){
+void infixToPostfix(char* infix,char* postfix){
 	struct stack* s = createStack();
+	int j = 0;
 	for(int i = 0; infix[i]; i++){
 		if(isOperand(infix[i])){
-			printf("%c", infix[i]);
+			postfix[j++] = infix[i];
 		}
 		else if(isOperator(infix[i])){
 			while (!isEmpty(s) && precedence(infix[i])<=precedence(peek(s))){
-				printf("%c", pop(s));
+				postfix[j++] = pop(s);
 			}
 			push(s,infix[i]);
 		}
 	}
 	while(!isEmpty(s)){
-		printf("%c", pop(s));
+		postfix[j++] = pop(s);
 	}
-	printf("\n");
+	postfix[j] = '\0';
 	free(s);
+}
+
+void reverseString(char* str){
+	int n = strlen(str);
+	for(int i = 0; i<n/2; i++){
+		char temp = str[i];
+		str[i] = str[n-i-1];
+		str[n-i-1] = temp;
+	}
+}
+
+void infixToPrefix(char* infix,char* prefix){
+	reverseString(infix);
+	char postfix[100];
+	infixToPostfix(infix,postfix);
+	reverseString(postfix);
+	strcpy(prefix,postfix);
 }
 
 int main(int argc, char const *argv[])
 {
-	char infix[100];
+	char infix[100], postfix[100], prefix[100];
 	printf("Enter the infix expression : ");
 	scanf("%s",infix);
-	infixToPostfix(infix);
+	infixToPostfix(infix,postfix);
+	printf("%s\n", postfix);
+	printf("\n");
+	infixToPrefix(infix,prefix);
+	printf("%s\n", prefix);
 
 	return 0;
 }
